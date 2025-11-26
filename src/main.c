@@ -117,7 +117,7 @@ int main() {
         waitpid(pid2, NULL, 0);
 
         // Очистка ресурсов
-        // ЗАкрытие и удаление семафоров, а также удаление разделяемой памяти
+        // Закрытие и удаление семафоров, а также удаление разделяемой памяти
         munmap(shared_mem, sizeof(shared_data));
         shm_unlink("shm_data");
         sem_close(sem_child1);
