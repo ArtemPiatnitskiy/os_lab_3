@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(os_lab3 C)  # Указываем, что проект на языке C
+
+# Устанавливаем стандарт C11
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED True)
+
+# Флаги компиляции
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+
+# Вспомогательные файлы, используемые в child процессах
+set(HELPER_SOURCES
+    src/rwstdio.c
+)
+
+# Main исполняемый файл
+add_executable(main 
+    src/main.c
+    ${HELPER_SOURCES}
+)
+
+# Child1 исполняемый файл
+add_executable(child1 
+    src/child1.c
+    src/string_to_lowercase.c
+    ${HELPER_SOURCES}
+)
+
+# Child2 исполняемый файл
+add_executable(child2 
+    src/child2.c
+    src/space_replace.c
+    ${HELPER_SOURCES}
+)
+
+# Линковка с pthread для семафоров (для всех исполняемых файлов)
+target_link_libraries(main pthread rt)
+target_link_libraries(child1 pthread rt)
+target_link_libraries(child2 pthread rt)
+
+# Указываем директорию с заголовочными файлами
+target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(child1 PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(child2 PRIVATE ${CMAKE_SOURCE_DIR}/include)
